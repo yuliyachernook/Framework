@@ -82,37 +82,28 @@
                     <parallel>all</parallel>
                     <threadCount>4</threadCount>
                     <useUnlimitedThreads>true</useUnlimitedThreads>
-                    <argLine>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"</argLine>
-                    <systemProperties>
-                        <property>
-                            <name>allure.results.directory</name>
-                            <value>${project.build.directory}/allure-results</value>
-                        </property>
-                    </systemProperties>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.8.10/aspectjweaver-1.8.10.jar"
+                    </argLine>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjweaver</artifactId>
-                        <version>${aspectj.version}</version>
+                        <version>1.8.10</version>
                     </dependency>
                 </dependencies>
             </plugin>
-              <plugin>
-         <groupId>io.qameta.allure</groupId>
-         <artifactId>allure-maven</artifactId>
-         <version>2.9</version>
-         <configuration>
-            <reportVersion>2.6.0</reportVersion>
-         </configuration>
-      </plugin>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.10.0</version>
+            </plugin>
         </plugins>
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <aspectj.version>1.8.10</aspectj.version>
-        <allure-testng.version>2.6.0</allure-testng.version>
     </properties>
 
 </project>

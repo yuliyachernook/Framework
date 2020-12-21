@@ -12,7 +12,7 @@ import static util.Resolver.resolveCost;
 
 public class CartTest extends CommonConditions {
 
-    @Test (priority=1)
+    @Test
     public void addItemToCartWithoutSelectingASizeTest(){
         Item expectedItem = ItemCreator.withAllProperties("first");
 
@@ -28,7 +28,7 @@ public class CartTest extends CommonConditions {
         assertThat(cartPage.isEmptyCart()).isTrue();
     }
     //10
-    @Test (priority=2)
+    @Test
     public void removeItemFromCartTest() {
         Item expectedItem = ItemCreator.withAllProperties("first");
 
@@ -44,7 +44,7 @@ public class CartTest extends CommonConditions {
         assertThat(isEmptyCart).isTrue();
 }
 //11
-    @Test (priority=3)
+    @Test
     public void selectAmountGreaterThanThereIsTest(){
         Item expectedItem = ItemCreator.withAllProperties("first");
         int expectedAmount = 20;
@@ -59,7 +59,7 @@ public class CartTest extends CommonConditions {
         assertThat(cartPage.isSelectedMoreThanThereIs()).isTrue();
     }
 
-    @Test (priority=4)
+    @Test
     public void checkCorrectSumPriceProduct() {
         Item expectedItem = ItemCreator.withAllProperties("first");
         Item expectedItem2 = ItemCreator.withAllProperties("third");
@@ -78,7 +78,7 @@ public class CartTest extends CommonConditions {
         assertThat(cartPage.getSumAllProductPrice()).isEqualTo(cartPage.getPreliminaryСost());
     }
 
-    @Test (priority=5)
+    @Test
     public void correctChangeCountProductTest() {
         Item expectedItem = ItemCreator.withAllProperties("first");
 
