@@ -24,6 +24,14 @@ public class CartPage extends AbstractPageWithStaticUrl{
     String countOfItemTemplate = "//input[@class=\"item-quantity-input ignored\"]";
     String itemDeleteTemplate = "//a[@class=\"cart-square-link\"]";
 
+    @FindBy(xpath = "//div[@class=\"price-info-area\"]//span[contains(text(),\"Предварительная сумма\")]//following-sibling::span")
+    private WebElement cost;
+    @FindBy(xpath = "//div[@class=\"price-info-area\"]//span[contains(text(),\"Цена доставки\")]//following-sibling::span")
+    private WebElement del;
+
+    @FindBy(className = "cart-empty-title")
+    private WebElement emptyTitle;
+
     public CartPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -34,44 +42,33 @@ public class CartPage extends AbstractPageWithStaticUrl{
         return this;
     }
 
-    @FindBy(xpath = "//div[@class=\"price-info-area\"]//span[contains(text(),\"Предварительная сумма\")]//following-sibling::span")
-    private WebElement cost;
-    @FindBy(xpath = "//div[@class=\"price-info-area\"]//span[contains(text(),\"Цена доставки\")]//following-sibling::span")
-    private WebElement del;
-
-    @FindBy(className = "cart-empty-title")
-    private WebElement emptyTitle;
-
     public String isEmptyCart(){
         return waitUntilVisibilityOf(emptyTitle).getText();
     }
 
-    public Double preliminaryСost() {
-        WebElement del = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"Предварительная сумма\")]//following-sibling::span")));
+    public Double getPreliminaryСost() {
+        WebElement del = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"Предварительная сумма\")]//following-sibling::span"));
         return getDoubleByWebElementText(del);
     }
 
-    public String deliveryCost() {
-        WebElement del = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"Цена доставки\")]//following-sibling::span")));
+    public String getDeliveryCost() {
+        WebElement del = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"Цена доставки\")]//following-sibling::span"));
         return getStringByWebElementText(del);
     }
 
-    public Double totalСost() {
-        WebElement del = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"ОБЩАЯ\")]//following-sibling::span")));
+    public Double getTotalСost() {
+        WebElement del = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"ОБЩАЯ\")]//following-sibling::span"));
         return getDoubleByWebElementText(del);
     }
 
     public String getTitleProduct(String productUrl){
-        WebElement titleProduct = driver.findElement(By.xpath(String.format("//a[contains(@href, '%s')]" +
+        WebElement titleProduct = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
                 "//following::span[@class=\"rd-cart-item-code\"]",productUrl)));
         return titleProduct.getText();
     }
 
     public Double getPriceProduct(String productUrl){
-        WebElement priceProduct = driver.findElement(By.xpath(String.format("//a[contains(@href, '%s')]" +
+        WebElement priceProduct = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
                 "//following::span[@class=\"rd-cart-item-price mb-15\"]", productUrl)));
         return getDoubleByWebElementText(priceProduct);
     }
@@ -93,14 +90,13 @@ public class CartPage extends AbstractPageWithStaticUrl{
     }
 
     public CartPage changeCountOfProduct(String productUrl,int countProduct){
-        WebElement el = driver.findElement(By.xpath(String.format("//a[contains(@href, '%s')]//" +
+        WebElement el = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]//" +
                 "following::input[@class=\"item-quantity-input ignored\"]",productUrl)));
         el.click();
         el.sendKeys(Keys.DELETE);
         el.sendKeys(Integer.toString(countProduct));
         return this;
     }
-
 
     public boolean updatedCartMessage(){
         waitUntilElementIsClickable(By.id("cartalertblock"));
@@ -119,7 +115,7 @@ public class CartPage extends AbstractPageWithStaticUrl{
     }
 
     public CartPage removeItem(String url){
-        driver.findElement(By.xpath(String.format("//a[contains(@href, '%s')]/ancestor::div[contains(@class, \"text-left\")]" +
+        driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]/ancestor::div[contains(@class, \"text-left\")]" +
                 "//following::a[@class=\"cart-square-link\"]", url))).click();
         waitUntilElementIsClickable(By.xpath("//a[@class=\"inverted-modal-button sc-delete\"]")).click();
         return this;

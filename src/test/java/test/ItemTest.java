@@ -83,7 +83,7 @@ public class ItemTest extends  CommonConditions{
 
         assertThat(wishlistPage.getCountOfFavoriteItemsMessage()).contains("Вас в Списке желаний 1 товаров");
         assertThat(wishlistPage.getFavoriteItemsListSize()).isEqualTo(1);
-        assertThat(productName).contains(wishlistPage.getNameTitle(expectedItem.getUrl()));
+        assertThat(productName).contains(wishlistPage.getNameProduct(expectedItem.getUrl()));
         assertThat(wishlistPage.getProductPrice(expectedItem.getUrl())).isEqualTo(productPrice);
     }
 //8

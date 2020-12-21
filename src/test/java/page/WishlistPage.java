@@ -5,11 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.pagefactory.ByChained;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+
+import static util.Resolver.resolveTemplate;
 
 public class WishlistPage extends AbstractPageWithStaticUrl {
 
@@ -36,16 +35,15 @@ public class WishlistPage extends AbstractPageWithStaticUrl {
         return countOfFavoriteMessage.getText();
     }
 
-    public String getNameTitle(String productUrl){
-        WebElement productTitle = driver.findElement(By.xpath(String.format("//a[contains(@href, '%s')]" +
+    public String getNameProduct(String productUrl){
+        WebElement productTitle = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
                 "//following::p[@class=\"c-item-name\"]",productUrl)));
         return productTitle.getText();
     }
 
     public Double getProductPrice(String productUrl){
-        WebElement productPrice = driver.findElement(By.xpath(String.format("//a[contains(@href, '%s')]" +
+        WebElement productPrice = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
                 "//following::span[@class=\"c-item-discount-price\" or @class=\"c-item-price\"]", productUrl)));
         return getDoubleByWebElementText(productPrice);
     }
-
 }

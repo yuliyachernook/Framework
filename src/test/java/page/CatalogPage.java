@@ -56,7 +56,6 @@ public class CatalogPage extends AbstractPageWithParameterizedUrl {
         return this;
     }
 
-
     public List<String> getAllProductCategory() {
         List<String> categoryList =new ArrayList<>();
         waitUntilAjaxCompleted();

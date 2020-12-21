@@ -28,7 +28,7 @@ public class SaleTest extends CommonConditions {
                 .addToCart()
                 .goToCart();
 
-        assertThat(cartPage.deliveryCost()).contains("Бесплатно");
+        assertThat(cartPage.getDeliveryCost()).contains("Бесплатно");
         assertThat(productTitle).contains(cartPage.getTitleProduct(urlExpectedItem));
         assertThat(cartPage.getPriceProduct(urlExpectedItem)).isEqualTo(productPrice);
         assertThat(cartPage.getPriceProduct(urlExpectedItem)).isGreaterThanOrEqualTo(70);
@@ -48,7 +48,7 @@ public class SaleTest extends CommonConditions {
                 .inputPromoCode(promoCode);
 
         assertThat(cartPage.isInvalidPromoCode()).isTrue();
-        assertThat(cartPage.totalСost()).
-                isEqualTo(Double.parseDouble(cartPage.deliveryCost()) + cartPage.getPriceProduct(urlExpectedItem));
+        assertThat(cartPage.getTotalСost()).
+                isEqualTo(Double.parseDouble(cartPage.getDeliveryCost()) + cartPage.getPriceProduct(urlExpectedItem));
     }
 }

@@ -8,6 +8,7 @@ import page.ProductPage;
 import service.ItemCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static util.Resolver.resolveCost;
 
 public class CartTest extends CommonConditions {
     //9
@@ -75,7 +76,7 @@ public class CartTest extends CommonConditions {
         cartPage.changeCountOfProduct(expectedItem.getUrl(),expectedItem.getCount())
         .updatedCartMessage();
 
-        assertThat(Math.round(expectedItem.getPrice()*expectedItem.getCount()*100.0)/100.0).isEqualTo(cartPage.preliminaryСost());
+        assertThat(resolveCost(expectedItem.getPrice(), expectedItem.getCount())).isEqualTo(cartPage.getPreliminaryСost());
     }
 //13
     @Test

@@ -9,16 +9,22 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage extends AbstractPageWithStaticUrl{
 
-    @FindBy(xpath = "//input[@id='LoginEmail']")
-    private WebElement inputLogin;
+    @FindBy(id = "LoginEmail")
+    private WebElement loginInput;
 
-    @FindBy(xpath = "//input[@id='Password']")
-    private WebElement inputPassword;
+    @FindBy(id = "Password")
+    private WebElement passwordInput;
 
-    @FindBy(xpath = "//a[@id='loginLink']")
+    @FindBy(id = "loginLink")
     private WebElement submitButton;
 
-    Actions actions;
+    @FindBy(id = "header-login-section")
+    private WebElement goToAccountButton;
+
+    @FindBy(xpath = "//ul[@class=\"dropdown-menu\"]//a[@data-tracking-label=\"Личныеданные\"]")
+    private WebElement goToPersonalInformationButton;
+
+    private Actions actions;
 
     public LoginPage(WebDriver driver)
     {
@@ -35,12 +41,12 @@ public class LoginPage extends AbstractPageWithStaticUrl{
     }
 
     public LoginPage inputUserLogin(String login){
-        inputLogin.sendKeys(login);
+        loginInput.sendKeys(login);
         return this;
     }
 
     public LoginPage inputUserPassword(String password){
-        inputPassword.sendKeys(password);
+        passwordInput.sendKeys(password);
         return this;
     }
 
@@ -49,12 +55,8 @@ public class LoginPage extends AbstractPageWithStaticUrl{
         return this;
     }
     public AccountPage goToAccount() {
-        WebElement account = driver.findElement(By.id("header-login-section"));
-        actions.moveToElement(account).build().perform();
-        WebElement goTo = driver.findElement(By.xpath("//*[@id=\"header-profile-section\"]/div/ul/li[2]/a"));
-        goTo.click();
+        actions.moveToElement(goToAccountButton).build().perform();
+        waitUntilVisibilityOf(goToPersonalInformationButton).click();
         return new AccountPage(driver);
     }
-
-
 }

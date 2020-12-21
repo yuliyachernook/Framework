@@ -16,10 +16,6 @@ public abstract class AbstractPage {
         this.driver = driver;
     }
 
-    public String getCurrentUrl(){
-        return driver.getCurrentUrl();
-    }
-
     public WebElement waitUntilPresenceOfElement(By location){
         return new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
                 .until(ExpectedConditions.presenceOfElementLocated(location));
@@ -40,12 +36,6 @@ public abstract class AbstractPage {
                 .until(ExpectedConditions.elementToBeClickable(location));
     }
 
-    public WebElement waitUntilElementIsClickable(WebElement element){
-        return new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
-                .until(ExpectedConditions.elementToBeClickable(element));
-    }
-
-
     public void waitUntilAjaxCompleted(){
         new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
                 .until(jQueryAJAXCompleted());
@@ -59,7 +49,6 @@ public abstract class AbstractPage {
             }
         };
     }
-
     public Double getDoubleByWebElementText(WebElement webElement){
         return Double.parseDouble(webElement.getText().replace(",", ".").replace("BYN","").trim());
     }

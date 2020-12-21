@@ -52,7 +52,7 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
 
     public boolean isFavoriteItem(){
         waitUntilPresenceOfElement(By.xpath("//a[contains(@class,\"add-to-favorite-detail added\")]"));
-        return driver.findElements(By.xpath("//a[contains(@class,\"add-to-favorite-detail added\")]")).size() >0;
+        return !driver.findElements(By.xpath("//a[contains(@class,\"add-to-favorite-detail added\")]")).isEmpty();
     }
 
     public ProductPage chooseItemSize(String size){
@@ -66,16 +66,17 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
     }
 
     public ProductPage addToCart() {
-        waitUntilVisibilityOf(addToCart).click();
+        addToCart.click();
         return this;
     }
 
     public CartPage goToCart() {
-        waitUntilVisibilityOf(goToCart).click();
+        goToCart.click();
         return new CartPage(driver);
     }
 
     public boolean notSelectSizeMessage(){
+        waitUntilPresenceOfElement(By.className("popover-content"));
         return !driver.findElements(By.className("popover-content")).isEmpty();
     }
 
@@ -91,8 +92,8 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
     }
 
     public String getNameProduct() {
-        WebElement titleProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]//following::div[@class='product-title']"));
-        return titleProduct.getText().trim();
+        WebElement nameProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]//following::div[@class='product-title']"));
+        return nameProduct.getText().trim();
     }
 
     public Double getPriceProduct() {
