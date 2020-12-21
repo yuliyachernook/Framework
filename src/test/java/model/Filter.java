@@ -31,7 +31,7 @@ public class Filter {
         return price;
     }
 
-    public void setColor(String price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

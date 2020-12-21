@@ -7,7 +7,6 @@ public class TestDataReader {
 
     public static String getTestData(String key) {
         String resource = resourceBundle.getString(key);
-
         return resource.equals("NONE") ? "" : resource;
     }
 }

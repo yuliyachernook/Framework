@@ -9,21 +9,17 @@ import service.UserCreator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginTest extends CommonConditions {
-    //done6
+//3
     @Test
     public void loginTest() {
         User testUser= UserCreator.withAllProperty();
-        LoginPage loginPage= new LoginPage(driver)
+
+        AccountPage accountPage = new LoginPage(driver)
                 .openPage()
                 .inputUserLogin(testUser.getEmail())
-                .inputUserPassword(testUser.getPassword());
-
-        String currentUrl=loginPage.getCurrentUrl();
-        loginPage.clickSubmitButton();
-
-        assertThat(loginPage.getCurrentUrl()).isNotEqualTo(currentUrl);
-
-        AccountPage accountPage= loginPage.goToAccount();
+                .inputUserPassword(testUser.getPassword())
+                .clickSubmitButton()
+                .goToAccount();
 
         assertThat(accountPage.getUserName()).contains(testUser.getUsername());
         assertThat(accountPage.getUserNameEmail()).isEqualTo(testUser.getEmail());

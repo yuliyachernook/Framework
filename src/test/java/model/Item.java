@@ -7,19 +7,28 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Item {
+    private String url;
     private String name;
     private String size;
     private String color;
     private double price;
     private int count;
 
-    private Item(String name, String size, String color, double cost, int count) {
-
+    public Item(String url, String name, String size, String color, double cost, int count) {
+        this.url = url;
         this.name = name;
         this.size = size;
         this.color = color;
         this.price = cost;
         this.count = count;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {
@@ -45,12 +54,4 @@ public class Item {
     public int getCount() { return count;}
 
     public void setCount(int count) { this.count = count;}
-    public static Item of(String name, String size, String color, double cost, int count){
-        return new Item(name, size, color, cost, count);
-    }
-
-    public void changeAmount(int amount) {
-        this.count = amount;
-        this.price = price * amount;
-    }
 }

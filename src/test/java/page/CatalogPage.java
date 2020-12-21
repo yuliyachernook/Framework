@@ -15,13 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 public class CatalogPage extends AbstractPageWithParameterizedUrl {
 
-    @FindBy(xpath = "//a[@class=\"a_model_item\"]//div[@class=\"title\"]")
-    private WebElement model;
-
-    @FindBy(xpath = "//button[@class='catalog-filter__title']/span[text()='Цвет']/../..//button[@class='catalog-filter__category-more']")
-    private WebElement moreColorButton;
-    private By mod = By.xpath("//a[@class=\"a_model_item\"]//div[@class=\"title\"]");
-
     public CatalogPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver,this);
@@ -65,22 +58,22 @@ public class CatalogPage extends AbstractPageWithParameterizedUrl {
 
 
     public List<String> getAllProductCategory() {
-        List<String> list =new ArrayList<>();
+        List<String> categoryList =new ArrayList<>();
         waitUntilAjaxCompleted();
         for (WebElement item:driver.findElements(By.xpath("//a[@class=\"a_model_item\"]//div[@class=\"title\"]"))) {
-            list.add(item.getText());
+            categoryList.add(item.getText());
         }
-        return list;
+        return categoryList;
     }
 
     public List<Double> getAllProductPrice() {
-        List<Double> productPricelist =new ArrayList<>();
+        List<Double> priceList =new ArrayList<>();
         waitUntilAjaxCompleted();
         for (WebElement priceItem: driver.findElements( new ByChained
                 (By.xpath("//a[@class=\"a_model_item\"]//div[@class=\"discount-price\"]"),
                 (By.xpath("//a[@class=\"a_model_item\"]//div[@class=\"raw-price\"]"))))) {
-            productPricelist.add(getDoubleByWebElementText(priceItem));
+            priceList.add(getDoubleByWebElementText(priceItem));
         }
-        return productPricelist;
+        return priceList;
     }
 }

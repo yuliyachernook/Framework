@@ -31,12 +31,12 @@ public class WishlistPage extends AbstractPageWithStaticUrl {
         return favoriteItemsList.size();
     }
 
-    public String getCountOfProductsMessage(){
-        WebElement countOfProductsMessage = waitUntilPresenceOfElement(By.xpath("//p[@class=\"text-center bold\"]"));
-        return countOfProductsMessage.getText();
+    public String getCountOfFavoriteItemsMessage(){
+        WebElement countOfFavoriteMessage = waitUntilPresenceOfElement(By.xpath("//p[@class=\"text-center bold\"]"));
+        return countOfFavoriteMessage.getText();
     }
 
-    public String getProductTitle(String productUrl){
+    public String getNameTitle(String productUrl){
         WebElement productTitle = driver.findElement(By.xpath(String.format("//a[contains(@href, '%s')]" +
                 "//following::p[@class=\"c-item-name\"]",productUrl)));
         return productTitle.getText();

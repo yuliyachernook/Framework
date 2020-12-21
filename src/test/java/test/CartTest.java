@@ -10,95 +10,90 @@ import service.ItemCreator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CartTest extends CommonConditions {
-    //8
-    @Test
-    public void addItemToCartWithoutSizeTest(){
-        Item expectedItem = ItemCreator.withCredentialsFromProperty("first");
-        String uri = ItemCreator.getUri("first");
-
-        String item = new ProductPage(driver)
-                .openPage(uri)
-                .chooseItemColor(expectedItem.getColor())
-                .addToCart()
-                .noSize()
-                .goToCart()
-                .emptyCart();
-
-        Assert.assertEquals(item, "Ваша корзина пуста");
-    }
     //9
     @Test
+    public void addItemToCartWithoutSelectingASizeTest(){
+        Item expectedItem = ItemCreator.withAllProperties("first");
+
+        ProductPage productPage = new ProductPage(driver)
+                .openPage(expectedItem.getUrl())
+                .chooseItemColor(expectedItem.getColor())
+                .addToCart();
+
+        assertThat(productPage.notSelectSizeMessage()).isTrue();
+
+        String emptycart = productPage.goToCart()
+                                      .isEmptyCart();
+
+        assertThat(emptycart).isEqualTo("Ваша корзина пуста");
+    }
+    //10
+    @Test
     public void removeItemFromCartTest() {
-        Item expectedItem = ItemCreator.withCredentialsFromProperty("first");
-        String uri = ItemCreator.getUri("first");
+        Item expectedItem = ItemCreator.withAllProperties("first");
 
         String item  = new ProductPage(driver)
-                .openPage(uri)
+                .openPage(expectedItem.getUrl())
                 .chooseItemColor(expectedItem.getColor())
                 .chooseItemSize(expectedItem.getSize())
                 .addToCart()
                 .goToCart()
-                .removeItem(uri)
-                .emptyCart();
-
+                .removeItem(expectedItem.getUrl())
+                .isEmptyCart();
 
         Assert.assertEquals(item, "Ваша корзина пуста");
 }
-
+//11
     @Test
-    public void moreThanThereIS(){
-        Item expectedItem = ItemCreator.withCredentialsFromProperty("first");
-        String uri = ItemCreator.getUri("first");
+    public void selectAmountGreaterThanThereIsTest(){
+        Item expectedItem = ItemCreator.withAllProperties("first");
         int expectedAmount = 20;
 
-        ProductPage productPage = new ProductPage(driver)
-                .openPage(uri)
+        CartPage cartPage = new ProductPage(driver)
+                .openPage(expectedItem.getUrl())
                 .chooseItemSize(expectedItem.getSize())
-                .addToCart();
+                .addToCart()
+                .goToCart()
+                .changeCountOfProduct(expectedItem.getUrl(),expectedAmount);
 
-        String productTitle = productPage.getTitleProduct();
-        Double productPrice = productPage.getPriceProduct();
-
-               CartPage cartPage = productPage
-                       .goToCart()
-                        .changeCountOfProduct(uri,expectedAmount);
-
+        assertThat(cartPage.updatedCartMessage()).isTrue();
 
     }
 
-
+//12
     @Test
-    public void checkCorrectChangeCountProduct() throws InterruptedException {
-        Item expectedItem = ItemCreator.withCredentialsFromProperty("first");
-        String uri = ItemCreator.getUri("first");
+    public void correctChangeCountProductTest() {
+        Item expectedItem = ItemCreator.withAllProperties("first");
 
         CartPage cartPage = new ProductPage(driver)
-                .openPage(uri)
+                .openPage(expectedItem.getUrl())
                 .chooseItemColor(expectedItem.getColor())
                 .chooseItemSize(expectedItem.getSize())
                 .addToCart()
                 .goToCart();
 
-        cartPage.changeCountOfProduct(uri,expectedItem.getCount());
-        assertThat(String.format("%.2f",expectedItem.getPrice()*expectedItem.getCount()).contains(cartPage.cost().trim()));
-    }
+        cartPage.changeCountOfProduct(expectedItem.getUrl(),expectedItem.getCount())
+        .updatedCartMessage();
 
+        assertThat(Math.round(expectedItem.getPrice()*expectedItem.getCount()*100.0)/100.0).isEqualTo(cartPage.preliminaryСost());
+    }
+//13
     @Test
     public void checkCorrectSumPriceProduct() {
-        Item expectedItem = ItemCreator.withCredentialsFromProperty("first");
-        Item expectedItem2 = ItemCreator.withCredentialsFromProperty("second");
+        Item expectedItem = ItemCreator.withAllProperties("first");
+        Item expectedItem2 = ItemCreator.withAllProperties("third");
 
-        CartPage orderPage = new ProductPage(driver)
-                .openPage(ItemCreator.getUri("first"))
+        CartPage cartPage = new ProductPage(driver)
+                .openPage(expectedItem.getUrl())
                 .chooseItemColor(expectedItem.getColor())
                 .chooseItemSize(expectedItem.getSize())
                 .addToCart()
-                .openPage(ItemCreator.getUri("first"))
-                .chooseItemColor(expectedItem.getColor())
-                .chooseItemSize(expectedItem.getSize())
+                .openPage(expectedItem2.getUrl())
+                .chooseItemColor(expectedItem2.getColor())
+                .chooseItemSize(expectedItem2.getSize())
                 .addToCart()
                 .goToCart();
 
-        assertThat(orderPage.getSumAllProductPrice()).isEqualTo(orderPage.costInt());
+        assertThat(cartPage.getSumAllProductPrice()).isEqualTo(cartPage.costInt());
     }
 }

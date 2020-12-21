@@ -75,18 +75,23 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
         return new CartPage(driver);
     }
 
-    public ProductPage noSize(){
-        waitUntilPresenceOfElement(By.className("popover-content"));
-        return this;
+    public boolean notSelectSizeMessage(){
+        return !driver.findElements(By.className("popover-content")).isEmpty();
     }
 
     public ProductPage chooseSimilarProduct(int order){
         driver.findElements(By.xpath("//div[@class=\"color-box\"]")).get(order-1).click();
+        jQueryAJAXCompleted();
         return this;
     }
 
     public String getTitleProduct() {
         WebElement titleProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]//following::div[@class='product-code']"));
+        return titleProduct.getText().trim();
+    }
+
+    public String getNameProduct() {
+        WebElement titleProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]//following::div[@class='product-title']"));
         return titleProduct.getText().trim();
     }
 

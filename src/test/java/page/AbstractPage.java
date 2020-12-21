@@ -46,11 +46,6 @@ public abstract class AbstractPage {
     }
 
 
-    public void waitUntilFieldIsChanged(WebElement element, String startValue){
-        new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
-                .until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(element, startValue)));
-    }
-
     public void waitUntilAjaxCompleted(){
         new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
                 .until(jQueryAJAXCompleted());
@@ -72,5 +67,4 @@ public abstract class AbstractPage {
     public String getStringByWebElementText(WebElement webElement){
         return webElement.getText().replace(",", ".").replace("BYN","").trim();
     }
-
 }
