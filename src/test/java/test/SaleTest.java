@@ -13,7 +13,7 @@ public class SaleTest extends CommonConditions {
 //1
     @Test
     public void freeDeliveryWhenOrderAmountIsMoreThanSeventyTest() {
-        Item expectedItem = ItemCreator.withAllProperties("third");
+        Item expectedItem = ItemCreator.withAllProperties("second");
         String urlExpectedItem = expectedItem.getUrl();
 
         ProductPage productPage  = new ProductPage(driver)

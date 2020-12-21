@@ -37,7 +37,7 @@ public class DriverSingleton {
         driver.manage().deleteAllCookies();
     }
 
-    public static void closeDriver(){
+    public static void closeDriver() {
         driver.quit();
         driver=null;
     }

@@ -24,9 +24,6 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
     @FindBy(className = "header-favorite-icon")
     private WebElement goToWishlist;
 
-    @FindBy(xpath = "//a[contains(@class,\"add-to-favorite-detail added\")]")
-    private WebElement heartIcon;
-
     @FindBy(id= "pd_add_to_cart")
     private WebElement addToCart;
 
@@ -81,6 +78,7 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
 
     public boolean notSelectSizeMessage(){
         waitUntilPresenceOfElement(By.className("popover-content"));
+        logger.info("Not selected size");
         return !driver.findElements(By.className("popover-content")).isEmpty();
     }
 
@@ -91,17 +89,20 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
     }
 
     public String getCodeProduct() {
-        WebElement titleProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]//following::div[@class='product-code']"));
+        WebElement titleProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]" +
+                "//following::div[@class='product-code']"));
         return titleProduct.getText().trim();
     }
 
     public String getNameProduct() {
-        WebElement nameProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]//following::div[@class='product-title']"));
+        WebElement nameProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]" +
+                "//following::div[@class='product-title']"));
         return nameProduct.getText().trim();
     }
 
     public Double getPriceProduct() {
-        WebElement titleProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"col-xs-12 price-area\"]//following::span[@class='price']"));
+        WebElement titleProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"col-xs-12 price-area\"]" +
+                "//following::span[@class='price']"));
         return getDoubleByWebElementText(titleProduct);
     }
 }

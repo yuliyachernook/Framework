@@ -11,9 +11,16 @@ public abstract class AbstractPage {
     protected final int WAIT_TIMEOUT_SECONDS = 50;
     protected WebDriver driver;
 
-
     protected AbstractPage(WebDriver driver){
         this.driver = driver;
+    }
+
+    public Double getDoubleByWebElementText(WebElement webElement){
+        return Double.parseDouble(webElement.getText().replace(",", ".").replace("BYN","").trim());
+    }
+
+    public String getStringByWebElementText(WebElement webElement){
+        return webElement.getText().replace(",", ".").replace("BYN","").trim();
     }
 
     public WebElement waitUntilPresenceOfElement(By location){
@@ -48,12 +55,5 @@ public abstract class AbstractPage {
                         driver).executeScript("return (window.jQuery != null) && (jQuery.active == 0);");
             }
         };
-    }
-    public Double getDoubleByWebElementText(WebElement webElement){
-        return Double.parseDouble(webElement.getText().replace(",", ".").replace("BYN","").trim());
-    }
-
-    public String getStringByWebElementText(WebElement webElement){
-        return webElement.getText().replace(",", ".").replace("BYN","").trim();
     }
 }

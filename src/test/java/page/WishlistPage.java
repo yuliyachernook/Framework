@@ -36,9 +36,9 @@ public class WishlistPage extends AbstractPageWithStaticUrl {
     }
 
     public String getNameProduct(String productUrl){
-        WebElement productTitle = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
+        WebElement productName = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
                 "//following::p[@class=\"c-item-name\"]",productUrl)));
-        return productTitle.getText();
+        return productName.getText();
     }
 
     public Double getPriceProduct(String productUrl){

@@ -27,23 +27,7 @@ public class CartTest extends CommonConditions {
 
         assertThat(cartPage.isEmptyCart()).isTrue();
     }
-    //10
-    @Test
-    public void removeItemFromCartTest() {
-        Item expectedItem = ItemCreator.withAllProperties("first");
 
-        boolean isEmptyCart  = new ProductPage(driver)
-                .openPage(expectedItem.getUrl())
-                .chooseItemColor(expectedItem.getColor())
-                .chooseItemSize(expectedItem.getSize())
-                .addToCart()
-                .goToCart()
-                .removeItem(expectedItem.getUrl())
-                .isEmptyCart();
-
-        assertThat(isEmptyCart).isTrue();
-}
-//11
     @Test
     public void selectAmountGreaterThanThereIsTest(){
         Item expectedItem = ItemCreator.withAllProperties("first");
@@ -61,17 +45,17 @@ public class CartTest extends CommonConditions {
 
     @Test
     public void checkCorrectSumPriceProduct() {
-        Item expectedItem = ItemCreator.withAllProperties("first");
-        Item expectedItem2 = ItemCreator.withAllProperties("third");
+        Item firstExpectedItem = ItemCreator.withAllProperties("first");
+        Item secondExpectedItem = ItemCreator.withAllProperties("second");
 
         CartPage cartPage = new ProductPage(driver)
-                .openPage(expectedItem.getUrl())
-                .chooseItemColor(expectedItem.getColor())
-                .chooseItemSize(expectedItem.getSize())
+                .openPage(firstExpectedItem.getUrl())
+                .chooseItemColor(firstExpectedItem.getColor())
+                .chooseItemSize(firstExpectedItem.getSize())
                 .addToCart()
-                .openPage(expectedItem2.getUrl())
-                .chooseItemColor(expectedItem2.getColor())
-                .chooseItemSize(expectedItem2.getSize())
+                .openPage(secondExpectedItem.getUrl())
+                .chooseItemColor(secondExpectedItem.getColor())
+                .chooseItemSize(secondExpectedItem.getSize())
                 .addToCart()
                 .goToCart();
 
@@ -92,5 +76,21 @@ public class CartTest extends CommonConditions {
         cartPage.changeCountOfProduct(expectedItem.getUrl(),expectedItem.getCount());
 
         assertThat(resolveCost(expectedItem.getPrice(), expectedItem.getCount())).isEqualTo(cartPage.getPreliminaryСost());
+    }
+
+    @Test
+    public void removeItemFromCartTest() {
+        Item expectedItem = ItemCreator.withAllProperties("first");
+
+        boolean isEmptyCart  = new ProductPage(driver)
+                .openPage(expectedItem.getUrl())
+                .chooseItemColor(expectedItem.getColor())
+                .chooseItemSize(expectedItem.getSize())
+                .addToCart()
+                .goToCart()
+                .removeItem(expectedItem.getUrl())
+                .isEmptyCart();
+
+        assertThat(isEmptyCart).isTrue();
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ItemTest extends  CommonConditions{
-//4
+
     @Test
     public void correctFilterByCategoryTest() {
         Filter filter= FilterCreator.withEmptyPrice();
@@ -31,10 +31,11 @@ public class ItemTest extends  CommonConditions{
         SoftAssertions softAssertions= generateSoftAssertionWithEquals(categoryList,filter.getCategory());
         softAssertions.assertAll();
     }
-//5
+
     @Test
     public void correctFilterByPriceTest() {
         Filter filter= FilterCreator.withEmptyCategory();
+
         List<Double> priceList = new CatalogPage(driver)
                 .openPage(TestDataReader.getTestData("test.data.catalog"))
                 .clickFilterButton()
@@ -46,10 +47,10 @@ public class ItemTest extends  CommonConditions{
         softAssertions.assertAll();
     }
 
-//6
     @Test
-    public void correctFilterByPriceAndCategoryTest(){
+    public void correctFilterByPriceAndCategoryTest() {
         Filter filter= FilterCreator.withAllProperty();
+
         CatalogPage catalogPage = new CatalogPage(driver)
                 .openPage(TestDataReader.getTestData("test.data.catalog"))
                 .clickFilterButton()
@@ -66,10 +67,9 @@ public class ItemTest extends  CommonConditions{
         softAssertions.assertAll();
     }
 
-//7
     @Test
     public void addItemToWishlistTest(){
-        Item expectedItem = ItemCreator.withAllProperties("third");
+        Item expectedItem = ItemCreator.withAllProperties("second");
         ProductPage productPage = new ProductPage(driver)
                 .openPage(expectedItem.getUrl())
                 .addToWishlist();
@@ -86,10 +86,10 @@ public class ItemTest extends  CommonConditions{
         assertThat(productName).contains(wishlistPage.getNameProduct(expectedItem.getUrl()));
         assertThat(wishlistPage.getPriceProduct(expectedItem.getUrl())).isEqualTo(productPrice);
     }
-//8
+
     @Test
     public void changesWhenChooseSimilarItemTest(){
-        Item expectedItem = ItemCreator.withAllProperties("third");
+        Item expectedItem = ItemCreator.withAllProperties("second");
         int similarItemOrder = 3;
 
         ProductPage productPage=new ProductPage(driver)

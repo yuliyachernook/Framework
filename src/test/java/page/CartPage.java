@@ -20,18 +20,11 @@ import static util.Resolver.resolveTemplate;
 
 public class CartPage extends AbstractPageWithStaticUrl{
     private final Logger logger = LogManager.getRootLogger();
-    String itemCostTemplate = "//span[@class=\"rd-cart-item-price mb-15\"]";
-    String countOfItemTemplate = "//input[@class=\"item-quantity-input ignored\"]";
-    String itemDeleteTemplate = "//a[@class=\"cart-square-link\"]";
 
-    @FindBy(xpath = "//div[@class=\"price-info-area\"]//span[contains(text(),\"Предварительная сумма\")]//following-sibling::span")
-    private WebElement cost;
-    @FindBy(xpath = "//div[@class=\"price-info-area\"]//span[contains(text(),\"Цена доставки\")]//following-sibling::span")
-    private WebElement del;
     @FindBy(xpath = "//input[@class=\"campaign-code-input cc-desktop\"]")
     private WebElement promoCodeInput;
     @FindBy(xpath = "//a[@class=\"inverted-modal-button sc-delete\"]")
-    private WebElement modal;
+    private WebElement confirmButton;
 
     public CartPage(WebDriver driver) {
         super(driver);
@@ -68,9 +61,9 @@ public class CartPage extends AbstractPageWithStaticUrl{
     }
 
     public String getCodeProduct(String productUrl){
-        WebElement titleProduct = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
+        WebElement codeProduct = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
                 "//following::span[@class=\"rd-cart-item-code\"]",productUrl)));
-        return titleProduct.getText();
+        return codeProduct.getText();
     }
 
     public Double getPriceProduct(String productUrl){
@@ -121,7 +114,7 @@ public class CartPage extends AbstractPageWithStaticUrl{
     public CartPage removeItem(String url){
         driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]/ancestor::div[contains(@class, \"text-left\")]" +
                 "//following::a[@title=\"Удалить\"]", url))).click();
-        waitUntilVisibilityOf(modal).click();
+        waitUntilVisibilityOf(confirmButton).click();
         logger.info("Item are removed");
         return this;
     }
