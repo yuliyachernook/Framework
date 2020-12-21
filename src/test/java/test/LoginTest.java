@@ -9,7 +9,7 @@ import service.UserCreator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginTest extends CommonConditions {
-//3
+
     @Test
     public void loginTest() {
         User testUser= UserCreator.withAllProperty();

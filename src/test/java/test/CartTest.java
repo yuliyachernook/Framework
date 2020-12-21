@@ -1,7 +1,6 @@
 package test;
 
 import model.Item;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import page.CartPage;
 import page.ProductPage;

@@ -10,7 +10,7 @@ import service.ItemCreator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SaleTest extends CommonConditions {
-//1
+
     @Test
     public void freeDeliveryWhenOrderAmountIsMoreThanSeventyTest() {
         Item expectedItem = ItemCreator.withAllProperties("second");
