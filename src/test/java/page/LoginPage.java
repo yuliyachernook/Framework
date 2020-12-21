@@ -1,5 +1,7 @@
 package page;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,6 +10,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage extends AbstractPageWithStaticUrl{
+
+    private final Logger logger = LogManager.getRootLogger();
 
     @FindBy(id = "LoginEmail")
     private WebElement loginInput;
@@ -37,6 +41,7 @@ public class LoginPage extends AbstractPageWithStaticUrl{
     public LoginPage openPage()
     {
         driver.navigate().to("https://www.lcwaikiki.by/ru-RU/BY/login");
+        logger.info("Login page opened");
         return this;
     }
 
@@ -52,6 +57,7 @@ public class LoginPage extends AbstractPageWithStaticUrl{
 
     public LoginPage clickSubmitButton(){
         submitButton.click();
+        logger.info("Login performed");
         return this;
     }
     public AccountPage goToAccount() {

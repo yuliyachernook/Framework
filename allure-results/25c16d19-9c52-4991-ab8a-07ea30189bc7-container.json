@@ -1,0 +1,1 @@
+{"uuid":"25c16d19-9c52-4991-ab8a-07ea30189bc7","name":"test.CommonConditions.close","description":"","start":1608544110751,"stop":1608544110960,"children":["4b95153a-28d5-41f1-9613-22f9fa3f6f64"],"afters":[{"name":"close","status":"passed","stage":"finished","description":"","start":1608544110751,"stop":1608544110960}]}

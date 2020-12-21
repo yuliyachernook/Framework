@@ -84,7 +84,7 @@ public class ItemTest extends  CommonConditions{
         assertThat(wishlistPage.getCountOfFavoriteItemsMessage()).contains("Вас в Списке желаний 1 товаров");
         assertThat(wishlistPage.getFavoriteItemsListSize()).isEqualTo(1);
         assertThat(productName).contains(wishlistPage.getNameProduct(expectedItem.getUrl()));
-        assertThat(wishlistPage.getProductPrice(expectedItem.getUrl())).isEqualTo(productPrice);
+        assertThat(wishlistPage.getPriceProduct(expectedItem.getUrl())).isEqualTo(productPrice);
     }
 //8
     @Test
@@ -95,9 +95,9 @@ public class ItemTest extends  CommonConditions{
         ProductPage productPage=new ProductPage(driver)
                 .openPage(expectedItem.getUrl());
 
-        String startTitle =productPage.getTitleProduct();
+        String startTitle =productPage.getCodeProduct();
         productPage.chooseSimilarProduct(similarItemOrder);
 
-        assertThat(startTitle).isNotEqualTo(productPage.getTitleProduct());
+        assertThat(startTitle).isNotEqualTo(productPage.getCodeProduct());
     }
 }

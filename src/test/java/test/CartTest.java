@@ -11,8 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static util.Resolver.resolveCost;
 
 public class CartTest extends CommonConditions {
-    //9
-    @Test
+
+    @Test (priority=1)
     public void addItemToCartWithoutSelectingASizeTest(){
         Item expectedItem = ItemCreator.withAllProperties("first");
 
@@ -23,17 +23,16 @@ public class CartTest extends CommonConditions {
 
         assertThat(productPage.notSelectSizeMessage()).isTrue();
 
-        String emptycart = productPage.goToCart()
-                                      .isEmptyCart();
+        CartPage cartPage = productPage.goToCart();
 
-        assertThat(emptycart).isEqualTo("Ваша корзина пуста");
+        assertThat(cartPage.isEmptyCart()).isTrue();
     }
     //10
-    @Test
+    @Test (priority=2)
     public void removeItemFromCartTest() {
         Item expectedItem = ItemCreator.withAllProperties("first");
 
-        String item  = new ProductPage(driver)
+        boolean isEmptyCart  = new ProductPage(driver)
                 .openPage(expectedItem.getUrl())
                 .chooseItemColor(expectedItem.getColor())
                 .chooseItemSize(expectedItem.getSize())
@@ -42,10 +41,10 @@ public class CartTest extends CommonConditions {
                 .removeItem(expectedItem.getUrl())
                 .isEmptyCart();
 
-        Assert.assertEquals(item, "Ваша корзина пуста");
+        assertThat(isEmptyCart).isTrue();
 }
 //11
-    @Test
+    @Test (priority=3)
     public void selectAmountGreaterThanThereIsTest(){
         Item expectedItem = ItemCreator.withAllProperties("first");
         int expectedAmount = 20;
@@ -57,29 +56,10 @@ public class CartTest extends CommonConditions {
                 .goToCart()
                 .changeCountOfProduct(expectedItem.getUrl(),expectedAmount);
 
-        assertThat(cartPage.updatedCartMessage()).isTrue();
-
+        assertThat(cartPage.isSelectedMoreThanThereIs()).isTrue();
     }
 
-//12
-    @Test
-    public void correctChangeCountProductTest() {
-        Item expectedItem = ItemCreator.withAllProperties("first");
-
-        CartPage cartPage = new ProductPage(driver)
-                .openPage(expectedItem.getUrl())
-                .chooseItemColor(expectedItem.getColor())
-                .chooseItemSize(expectedItem.getSize())
-                .addToCart()
-                .goToCart();
-
-        cartPage.changeCountOfProduct(expectedItem.getUrl(),expectedItem.getCount())
-        .updatedCartMessage();
-
-        assertThat(resolveCost(expectedItem.getPrice(), expectedItem.getCount())).isEqualTo(cartPage.getPreliminaryСost());
-    }
-//13
-    @Test
+    @Test (priority=4)
     public void checkCorrectSumPriceProduct() {
         Item expectedItem = ItemCreator.withAllProperties("first");
         Item expectedItem2 = ItemCreator.withAllProperties("third");
@@ -95,6 +75,22 @@ public class CartTest extends CommonConditions {
                 .addToCart()
                 .goToCart();
 
-        assertThat(cartPage.getSumAllProductPrice()).isEqualTo(cartPage.costInt());
+        assertThat(cartPage.getSumAllProductPrice()).isEqualTo(cartPage.getPreliminaryСost());
+    }
+
+    @Test (priority=5)
+    public void correctChangeCountProductTest() {
+        Item expectedItem = ItemCreator.withAllProperties("first");
+
+        CartPage cartPage = new ProductPage(driver)
+                .openPage(expectedItem.getUrl())
+                .chooseItemColor(expectedItem.getColor())
+                .chooseItemSize(expectedItem.getSize())
+                .addToCart()
+                .goToCart();
+
+        cartPage.changeCountOfProduct(expectedItem.getUrl(),expectedItem.getCount());
+
+        assertThat(resolveCost(expectedItem.getPrice(), expectedItem.getCount())).isEqualTo(cartPage.getPreliminaryСost());
     }
 }

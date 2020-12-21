@@ -21,7 +21,7 @@ public class SaleTest extends CommonConditions {
                 .chooseItemSize(expectedItem.getSize())
                 .chooseItemColor(expectedItem.getColor());
 
-        String productTitle = productPage.getTitleProduct();
+        String productTitle = productPage.getCodeProduct();
         Double productPrice = productPage.getPriceProduct();
 
         CartPage cartPage = productPage
@@ -29,11 +29,11 @@ public class SaleTest extends CommonConditions {
                 .goToCart();
 
         assertThat(cartPage.getDeliveryCost()).contains("Бесплатно");
-        assertThat(productTitle).contains(cartPage.getTitleProduct(urlExpectedItem));
+        assertThat(productTitle).contains(cartPage.getCodeProduct(urlExpectedItem));
         assertThat(cartPage.getPriceProduct(urlExpectedItem)).isEqualTo(productPrice);
         assertThat(cartPage.getPriceProduct(urlExpectedItem)).isGreaterThanOrEqualTo(70);
     }
-//2
+
     @Test
     public void invalidPromoCodeTest() {
         Item expectedItem = ItemCreator.withAllProperties("first");
@@ -47,8 +47,9 @@ public class SaleTest extends CommonConditions {
                 .goToCart()
                 .inputPromoCode(promoCode);
 
-        assertThat(cartPage.isInvalidPromoCode()).isTrue();
+
         assertThat(cartPage.getTotalСost()).
                 isEqualTo(Double.parseDouble(cartPage.getDeliveryCost()) + cartPage.getPriceProduct(urlExpectedItem));
+        assertThat(cartPage.isInvalidPromoCode()).isTrue();
     }
 }

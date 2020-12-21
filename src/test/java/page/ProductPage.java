@@ -1,5 +1,7 @@
 package page;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import static util.Resolver.resolveTemplate;
 
 public class ProductPage extends AbstractPageWithParameterizedUrl {
+    private final Logger logger = LogManager.getRootLogger();
 
     private static final String SIZE_TEMPLATE = "a[size=%s]";
     private static final String COLOR_TEMPLATE = "//div[@class=\"color-box\"]/div[@title=\"%s\"]";
@@ -52,6 +55,7 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
 
     public boolean isFavoriteItem(){
         waitUntilPresenceOfElement(By.xpath("//a[contains(@class,\"add-to-favorite-detail added\")]"));
+        logger.info("Item is favorite");
         return !driver.findElements(By.xpath("//a[contains(@class,\"add-to-favorite-detail added\")]")).isEmpty();
     }
 
@@ -86,7 +90,7 @@ public class ProductPage extends AbstractPageWithParameterizedUrl {
         return this;
     }
 
-    public String getTitleProduct() {
+    public String getCodeProduct() {
         WebElement titleProduct = waitUntilPresenceOfElement(By.xpath("//div[@class=\"row title-info\"]//following::div[@class='product-code']"));
         return titleProduct.getText().trim();
     }

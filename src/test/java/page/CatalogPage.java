@@ -1,5 +1,7 @@
 package page;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CatalogPage extends AbstractPageWithParameterizedUrl {
+    private final Logger logger = LogManager.getRootLogger();
 
     public CatalogPage(WebDriver driver) {
         super(driver);
@@ -23,6 +26,7 @@ public class CatalogPage extends AbstractPageWithParameterizedUrl {
     @Override
     public CatalogPage openPage(String partUrl) {
         driver.get("https://www.lcwaikiki.by/ru-RU/BY/product-group/"+partUrl);
+        logger.info("Catalog page opened");
         return this;
     }
 
@@ -48,11 +52,13 @@ public class CatalogPage extends AbstractPageWithParameterizedUrl {
 
     public CatalogPage clickFilterCategory(){
         waitUntilElementIsClickable((By.xpath("//span[text()=\"Категория\"]"))).click();
+        logger.info("Products are filtered by category");
         return this;
     }
 
     public CatalogPage clickFilterPrice(){
         waitUntilElementIsClickable((By.xpath("//span[text()=\"Цена\"]"))).click();
+        logger.info("Products are filtered by price");
         return this;
     }
 

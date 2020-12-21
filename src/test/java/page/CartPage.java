@@ -28,9 +28,10 @@ public class CartPage extends AbstractPageWithStaticUrl{
     private WebElement cost;
     @FindBy(xpath = "//div[@class=\"price-info-area\"]//span[contains(text(),\"Цена доставки\")]//following-sibling::span")
     private WebElement del;
-
-    @FindBy(className = "cart-empty-title")
-    private WebElement emptyTitle;
+    @FindBy(xpath = "//input[@class=\"campaign-code-input cc-desktop\"]")
+    private WebElement promoCodeInput;
+    @FindBy(xpath = "//a[@class=\"inverted-modal-button sc-delete\"]")
+    private WebElement modal;
 
     public CartPage(WebDriver driver) {
         super(driver);
@@ -42,26 +43,31 @@ public class CartPage extends AbstractPageWithStaticUrl{
         return this;
     }
 
-    public String isEmptyCart(){
-        return waitUntilVisibilityOf(emptyTitle).getText();
+    public boolean isEmptyCart(){
+        waitUntilPresenceOfElement(By.className("cart-empty-title"));
+        logger.info("The cart is empty");
+        return !driver.findElements(By.className("cart-empty-title")).isEmpty();
     }
 
     public Double getPreliminaryСost() {
-        WebElement del = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"Предварительная сумма\")]//following-sibling::span"));
-        return getDoubleByWebElementText(del);
+        WebElement preliminaryCost = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]" +
+                "//span[contains(text(),\"Предварительная сумма\")]//following-sibling::span"));
+        return getDoubleByWebElementText(preliminaryCost);
     }
 
     public String getDeliveryCost() {
-        WebElement del = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"Цена доставки\")]//following-sibling::span"));
-        return getStringByWebElementText(del);
+        WebElement deliveryCost = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]" +
+                "//span[contains(text(),\"Цена доставки\")]//following-sibling::span"));
+        return getStringByWebElementText(deliveryCost);
     }
 
     public Double getTotalСost() {
-        WebElement del = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"ОБЩАЯ\")]//following-sibling::span"));
-        return getDoubleByWebElementText(del);
+        WebElement totalCost = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]" +
+                "//span[contains(text(),\"ОБЩАЯ\")]//following-sibling::span"));
+        return getDoubleByWebElementText(totalCost);
     }
 
-    public String getTitleProduct(String productUrl){
+    public String getCodeProduct(String productUrl){
         WebElement titleProduct = driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]" +
                 "//following::span[@class=\"rd-cart-item-code\"]",productUrl)));
         return titleProduct.getText();
@@ -74,18 +80,19 @@ public class CartPage extends AbstractPageWithStaticUrl{
     }
 
     public CartPage inputPromoCode(String promoCode){
-         WebElement promoCodeButton = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"Ввести промокод\")]//following-sibling::span"));
+         WebElement promoCodeButton = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]" +
+                 "//span[contains(text(),\"Ввести промокод\")]//following-sibling::span"));
          promoCodeButton.click();
-     
-         WebElement inputPromoCode = waitUntilPresenceOfElement(By.xpath("//input[@class=\"campaign-code-input cc-desktop\"]"));
+         WebElement inputPromoCode = waitUntilVisibilityOf(promoCodeInput);
          inputPromoCode.click();
          inputPromoCode.sendKeys(promoCode);
-         waitUntilElementIsClickable(By.xpath("//div[@class=\"price-info-area\"]//a[@class=\"button b-ccode\"]")).click();
+         waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//a[@class=\"button b-ccode\"]")).click();
          return this;
     }
 
     public boolean isInvalidPromoCode() {
         waitUntilPresenceOfElement(By.xpath("//div[@class=\"coupon-code-msg-error\"]"));
+        logger.info("The promo code is invalid");
         return !driver.findElements(By.xpath("//div[@class=\"coupon-code-msg-error\"]")).isEmpty();
     }
 
@@ -95,29 +102,27 @@ public class CartPage extends AbstractPageWithStaticUrl{
         el.click();
         el.sendKeys(Keys.DELETE);
         el.sendKeys(Integer.toString(countProduct));
+        waitUntilElementIsClickable(By.id("cartalertblock"));
+        logger.info("Count of products are changed");
         return this;
     }
 
-    public boolean updatedCartMessage(){
-        waitUntilElementIsClickable(By.id("cartalertblock"));
-        return !driver.findElements(By.id("cartalertblock")).isEmpty();
-
-    }
-
-    public double costInt() {
-        WebElement del = waitUntilPresenceOfElement(By.xpath("//div[@class=\"price-info-area\"]//span[contains(text(),\"Предварительная сумма\")]//following-sibling::span"));
-        return getDoubleByWebElementText(del);
+    public boolean isSelectedMoreThanThereIs() {
+        waitUntilPresenceOfElement(By.xpath("//div[@class=\"bootbox-body\"]"));
+        return !driver.findElements(By.xpath("//div[@class=\"bootbox-body\"]")).isEmpty();
     }
 
     public double getSumAllProductPrice(){
-        List<WebElement> allPrice=driver.findElements(By.xpath("//div[@class=\"rd-cart-item shoppingcart-item\"]//span[@class=\"rd-cart-item-price mb-15\"]"));
+        List<WebElement> allPrice=driver.findElements(By.xpath("//div[@class=\"rd-cart-item shoppingcart-item\"]" +
+                "//span[@class=\"rd-cart-item-price mb-15\"]"));
         return allPrice.stream().mapToDouble(element -> getDoubleByWebElementText(element)).sum();
     }
 
     public CartPage removeItem(String url){
         driver.findElement(By.xpath(resolveTemplate("//a[contains(@href, '%s')]/ancestor::div[contains(@class, \"text-left\")]" +
-                "//following::a[@class=\"cart-square-link\"]", url))).click();
-        waitUntilElementIsClickable(By.xpath("//a[@class=\"inverted-modal-button sc-delete\"]")).click();
+                "//following::a[@title=\"Удалить\"]", url))).click();
+        waitUntilVisibilityOf(modal).click();
+        logger.info("Item are removed");
         return this;
     }
 }
